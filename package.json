@@ -1,0 +1,31 @@
+{
+  "name": "azure-storage-adapters",
+  "version": "0.1.0",
+  "description": "A Node.js adapter for Azure Storage with functions commonly (re)implemented in Azure projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drigofonte/azure-storage-adapters.git"
+  },
+  "keywords": [
+    "azure",
+    "blob",
+    "table",
+    "queue",
+    "storage",
+    "adapter"
+  ],
+  "author": "Rodrigo Fontenele Carvalho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drigofonte/azure-storage-adapters/issues"
+  },
+  "homepage": "https://github.com/drigofonte/azure-storage-adapters#readme",
+  "dependencies": {
+    "@azure/storage-blob": "12.1.0",
+    "moment": "2.24.0"
+  }
+}
