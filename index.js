@@ -2,7 +2,7 @@ const { BlobSASPermissions, BlobServiceClient, StorageSharedKeyCredential, gener
 const { Readable } = require('stream');
 const moment = require('moment');
 
-module.exports.BlobStorage = class {
+module.exports.BlobStorageAdapter = class {
     /**
      * @param {string} account 
      * @param {string} key 
