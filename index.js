@@ -16,10 +16,12 @@ module.exports.BlobStorageAdapter = class {
     /**
      * @param {string} container 
      * @param {string} filename 
+     * @param {Number} validFor The number of time units this blob's shared access signature should be valid for
+     * @param {string} validForUnit MomentJS compatible unit of time (e.g. minute, hour, day, etc.)
      */
-    generateBlobSas(container, filename) {
+    generateBlobSas(container, filename, validFor = 1, validForUnit = 'hour') {
         const start = moment().subtract(5, 'minute');
-        const end = start.clone().add(1, 'hour');
+        const end = start.clone().add(validFor, validForUnit);
 
         const signature = {
             startsOn: start.toDate(),
