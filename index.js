@@ -18,8 +18,9 @@ module.exports.BlobStorageAdapter = class {
      * @param {string} filename 
      * @param {Number} validFor The number of time units this blob's shared access signature should be valid for
      * @param {string} validForUnit MomentJS compatible unit of time (e.g. minute, hour, day, etc.)
+     * @param {string} contentType The content type of the blob. Defaults to application/octet-stream
      */
-    generateBlobSas(container, filename, validFor = 1, validForUnit = 'hour') {
+    generateBlobSas(container, filename, validFor = 1, validForUnit = 'hour', contentType = 'application/octet-stream') {
         const start = moment().subtract(5, 'minute');
         const end = start.clone().add(validFor, validForUnit);
 
@@ -28,7 +29,8 @@ module.exports.BlobStorageAdapter = class {
             expiresOn: end.toDate(),
             permissions: BlobSASPermissions.parse('r'),
             containerName: container,
-            blobName: filename
+            blobName: filename,
+            contentType
         }
         return `${this.url}${container}/${filename}?${generateBlobSas(signature, this.credential).toString()}`;
     }
