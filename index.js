@@ -20,14 +20,14 @@ module.exports.BlobStorageAdapter = class {
      * @param {string} validForUnit MomentJS compatible unit of time (e.g. minute, hour, day, etc.)
      * @param {string} contentType The content type of the blob. Defaults to application/octet-stream
      */
-    generateBlobSas(container, filename, validFor = 1, validForUnit = 'hour', contentType = 'application/octet-stream') {
+    generateBlobSas(container, filename, validFor = 1, validForUnit = 'hour', contentType = 'application/octet-stream', permissions = 'r') {
         const start = moment().subtract(5, 'minute');
         const end = start.clone().add(validFor, validForUnit);
 
         const signature = {
             startsOn: start.toDate(),
             expiresOn: end.toDate(),
-            permissions: BlobSASPermissions.parse('r'),
+            permissions: BlobSASPermissions.parse(permissions).toString(),
             containerName: container,
             blobName: filename,
             contentType
@@ -48,7 +48,7 @@ module.exports.BlobStorageAdapter = class {
         const signature = {
             startsOn: start.toDate(),
             expiresOn: end.toDate(),
-            permissions: ContainerSASPermissions.parse(permissions),
+            permissions: ContainerSASPermissions.parse(permissions).toString(),
             containerName: container
         }
         return `${this.url}${container}?${generateBlobSas(signature, this.credential).toString()}`;
