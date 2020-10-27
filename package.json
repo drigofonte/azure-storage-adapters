@@ -1,6 +1,6 @@
 {
   "name": "azure-storage-adapters",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A Node.js adapter for Azure Storage with functions commonly (re)implemented in Azure projects.",
   "main": "index.js",
   "scripts": {
