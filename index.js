@@ -84,4 +84,24 @@ module.exports.BlobStorageAdapter = class {
             container: container
         };
     }
+
+    /**
+     * @param {string} container 
+     * @param {string} filename 
+     * @param {Uint8Array} data 
+     */
+    async writeBuffer(container, filename, data) {
+        const buffer = Buffer.from(data);
+        const s = new Readable();
+        s._read = () => {};
+        s.push(buffer);
+        s.push(null);
+        const containerClient = this.blobService.getContainerClient(container);
+        const blockBlobClient = containerClient.getBlockBlobClient(filename);
+        await blockBlobClient.uploadStream(s);
+        return {
+            filename: filename,
+            container: container
+        };
+    }
 }
