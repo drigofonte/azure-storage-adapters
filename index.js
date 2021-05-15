@@ -104,4 +104,40 @@ module.exports.BlobStorageAdapter = class {
             container: container
         };
     }
+
+    /**
+     * @param {String} container 
+     * @param {String} filename 
+     * @returns {String}
+     */
+    async readString(container, filename) {
+      const containerClient = this.blobService.getContainerClient(container);
+      const blobClient = containerClient.getBlobClient(filename);
+      const response = await blobClient.download();
+      const downloaded = (await streamToBuffer(response.readableStreamBody)).toString();
+
+      async function streamToBuffer(readableStream) {
+        return new Promise((resolve, reject) => {
+          const chunks = [];
+          readableStream.on("data", (data) => {
+            chunks.push(data instanceof Buffer ? data : Buffer.from(data));
+          });
+          readableStream.on("end", () => {
+            resolve(Buffer.concat(chunks));
+          });
+          readableStream.on("error", reject);
+        });
+      }
+
+      return downloaded;
+    }
+
+    /**
+     * @param {String} container 
+     * @param {String} filename 
+     * @returns {Object}
+     */
+    async readJson(container, filename) {
+      return JSON.parse(await this.readString(container, filename));
+    }
 }
