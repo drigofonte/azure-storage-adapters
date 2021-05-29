@@ -72,18 +72,27 @@ module.exports.BlobStorageAdapter = class {
      * @param {object} data 
      */
     async writeJson(container, filename, data) {
-        const s = new Readable();
-        s._read = () => {};
-        s.push(JSON.stringify(data));
-        s.push(null);
-        const containerClient = this.blobService.getContainerClient(container);
-        const blockBlobClient = containerClient.getBlockBlobClient(filename);
-        await blockBlobClient.uploadStream(s);
-        return {
-            filename: filename,
-            container: container
-        };
+        return await this.writeString(container, filename, JSON.stringify(data));
     }
+
+    /**
+     * @param {string} container 
+     * @param {string} filename 
+     * @param {string} data 
+     */
+     async writeString(container, filename, data) {
+      const s = new Readable();
+      s._read = () => {};
+      s.push(data);
+      s.push(null);
+      const containerClient = this.blobService.getContainerClient(container);
+      const blockBlobClient = containerClient.getBlockBlobClient(filename);
+      await blockBlobClient.uploadStream(s);
+      return {
+          filename: filename,
+          container: container
+      };
+  }
 
     /**
      * @param {string} container 
